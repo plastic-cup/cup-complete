@@ -1,0 +1,26 @@
+{
+  "name": "autocomplete-original",
+  "version": "1.0.0",
+  "description": "type a bit, get some nice words",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rjmk/autocomplete.git"
+  },
+  "keywords": [
+    "autocomplete",
+    "english-dictionary"
+  ],
+  "author": "rjmk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjmk/autocomplete/issues"
+  },
+  "homepage": "https://github.com/rjmk/autocomplete"
+}
