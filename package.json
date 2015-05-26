@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node test/test.js"
+    "test": "node test/test.js",
+    "coverage": "./node_modules/.bin/istanbul cover test/test.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/rjmk/autocomplete/issues"
   },
-  "homepage": "https://github.com/rjmk/autocomplete"
+  "homepage": "https://github.com/rjmk/autocomplete",
+  "devDependencies": {
+    "istanbul": "^0.3.14"
+  }
 }
