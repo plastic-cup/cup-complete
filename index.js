@@ -35,6 +35,13 @@ ac.findWord = function(word, callback, next){
   return callback(null, found);
 };
 
+ac.getDefinition = function(word, callback){
+  var definition;
+  var testWord = "chicken";
+  /*API stuff here*/
+  
+  return (null, definition);
+};
 
 
 module.exports = ac;

@@ -30,52 +30,59 @@
     <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
 
     <script>
-    test('search for words beginning with awes', function(assert){
-      var done = assert.async();
-      $.get('/find/awes/', function handler(data) { // appends '/find/awes/' to localhost, which gives us stuff
-        var words = data.split(',');
-        console.log("Words: " + words);
-        console.log("1st word: " + words[0]);
-        assert.equal(words.length, 4, 'number of suggestions for awes is 4');
-        done();
-      })
-    });
-
-    test('elements in found array are clickable', function(assert){
-      console.log("here we are");
-      var done = assert.async();
-      $.get('/find/awes/', function handler(data) { // appends '/find/awes/' to localhost, which gives us stuff
-        var words = data.split(',');
-        if (words.length === 0){
-          console.log("Found array is empty");
-        }
-        else {
-            $('#results').first().click(function(){
-              var found0 = console.log("hello");
-            });
-          assert.equal(found0,'hello', 'click function works you rockkkkkk');
-        }
-        done();
+      test('search for words beginning with awes', function(assert){
+        var done = assert.async();
+        $.get('/find/awes/', function handler(data) { // appends '/find/awes/' to localhost, which gives us stuff
+          var words = data.split(',');
+          console.log("Words: " + words);
+          console.log("1st word: " + words[0]);
+          assert.equal(words.length, 4, 'number of suggestions for awes is 4');
+          done();
+        })
       });
-    });
+
+      // test('elements in found array are clickable', function(assert){
+      //   console.log("here we are");
+      //   var done = assert.async();
+      //   $.get('/find/awes/', function handler(data) { // appends '/find/awes/' to localhost, which gives us stuff
+      //     var words = data.split(',');
+      //     if (words.length === 0){
+      //       console.log("Found array is empty");
+      //     }
+      //     else {
+      //         $('#results').first().click(function(){
+      //           var found0 = console.log("hello");
+      //         });
+      //       assert.equal(found0,'hello', 'click function works you rockkkkkk');
+      //     }
+      //     done();
+      //   });
+      // });
     </script>
 
-    <script>
+    <script><!-- search bar stuff-->
+
       $('#search').keyup(function(e){
         var word = $('#search').val();
         if (word.length > 2){
-          $.get('/find/'+word, function handler(data) {
+          $.get('/find/' + word, function handler(data) {
             var words = data.split(',');
             var results = '';
-            words.forEach(function(w) {
-              results += "<p> " + w + "</p>";
-            });
+            //words.forEach(function(w) {
+            for (var i = 0; i < words.length; i++){
+
+              results += "<p id ='word" + i + "'> " + words[i] + "</p>"; //gives each p a unique id
+            }
+            //});
             $('#results').html(results);
           });
+
+          //$.get('/define/')
+
+
         }
       });
+
     </script>
-
-
   </body>
 </html>

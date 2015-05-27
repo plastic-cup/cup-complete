@@ -8,26 +8,36 @@ var fs = require('fs');
 var index = fs.readFileSync(__dirname + '/index.html');
 
 http.createServer(function handler(request, response){
-
+  var word;
   console.log(request.url);
   var url = request.url;
   if (url.length === 1){
     response.writeHead(200,{'Content-Type': 'text/html'});
     response.end(index.toString());
   }
-  if(url.indexOf('/find/') > - 1){
+  else if(url.indexOf('/find/') > - 1){
     //localhost:3000/find/word
-    var word = url.split('/')[2];
+    word = url.split('/')[2];
     ac.findWord(word, function(err, found){
       console.log("Found the following words: " + found);
       response.end(found.join(',')); // returns to client string of found words
     });
     // response.end('word:', word);
   }
+  else if(url.indexOf('/define/') > -1){
+    // define stuff here
+    word = url.split('/')[2];
+    ac.getDefinition(word, function(err, definition){
+      if(err){
+        throw new Error("couldn't get definition");
+      }
+      response.end(definition); // returns to client string of found words
+    });
+  }
   else {
     response.end('hello Rafe!');
   }
 
-}).listen(port);
+}).listen(port); // accepts connections on the specified port
 
 console.log('node http server listening on http://localhost:' + port);
