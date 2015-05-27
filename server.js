@@ -27,10 +27,13 @@ http.createServer(function handler(request, response){
   else if(url.indexOf('/define/') > -1){
     // define stuff here
     word = url.split('/')[2];
-    ac.getDefinition(word, function(err, definition){
+    console.log("inside function");
+    //word = "turkey";
+    ac.getDefinition(word/*turkey*/, function(err, definition){ // definition has stuff at this point
       if(err){
         throw new Error("couldn't get definition");
       }
+      console.log("DEFINITION: " + definition);
       response.end(definition); // returns to client string of found words
     });
   }

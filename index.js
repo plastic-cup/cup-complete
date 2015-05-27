@@ -1,8 +1,11 @@
 var fs = require('fs');
+var request = require('request'); // for the requesting stuff
 var ac = {};
 
 ac.import = function(callback){
-  if (typeof callback !== 'function') {return new Error('function plz');}
+  if (typeof callback !== 'function'){
+    return new Error('function plz');
+  }
   var filename = __dirname + '/words.txt';
   fs.readFile(filename, 'utf8', function(err, data){
     ac.words = data.split('\n').filter(function(line){
@@ -36,11 +39,23 @@ ac.findWord = function(word, callback, next){
 };
 
 ac.getDefinition = function(word, callback){
+  if (typeof word !== 'string'){
+    return new Error('Can only get definitions for strings');
+  }
+  if (typeof callback !== 'function'){
+    return new Error('function please');
+  }
   var definition;
-  var testWord = "chicken";
-  /*API stuff here*/
-  
-  return (null, definition);
+  /*API stuff here, pass it @param word*/
+  var wikiURL = 'http://en.wiktionary.org/w/index.php?title=' + word + '&action=raw';
+  request(wikiURL, function cb(err, response, body){
+    if (!err){
+      //console.log("response: " + response);
+      console.log("body: " + body);
+    }
+
+  });
+  return callback(null, definition);
 };
 
 
