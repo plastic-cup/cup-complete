@@ -2,7 +2,7 @@ var fs = require('fs');
 var ac = {};
 
 ac.import = function(callback){
-  if (typeof callback !== 'function') return new Error('function plz');
+  if (typeof callback !== 'function') {return new Error('function plz');}
   var filename = __dirname + '/words.txt';
   fs.readFile(filename, 'utf8', function(err, data){
     ac.words = data.split('\n').filter(function(line){
@@ -13,17 +13,19 @@ ac.import = function(callback){
 };
 
 ac.stats = function(word, callback){
-  if (!ac.searches) ac.searches = {};
-  if (!ac.searches[word]) ac.searches[word] = [];
+  if (!ac.searches) {ac.searches = {};}
+  if (!ac.searches[word]) {ac.searches[word] = [];}
   ac.searches[word].push(new Date().getTime());
   return callback(null, ac.searches);
 };
 
-ac.findWord = function(word, callback){
+ac.findWord = function(word, callback, next){
+  var statsCallback = next || function(){return;};
   var found = ac.words.filter(function(element){
     return element.indexOf(word) === 0;
   });
-  ac.stats(word);
+  ac.stats(word,statsCallback);
+  console.log(ac.searches);
   return callback(null, found);
 };
 

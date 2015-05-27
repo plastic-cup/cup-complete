@@ -1,6 +1,7 @@
 var assert = require('assert');
 var ac = require('../index.js');
 
+
 assert.equal(typeof ac, 'object');
 assert.equal(typeof ac.import, 'function');
 

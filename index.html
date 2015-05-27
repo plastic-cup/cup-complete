@@ -4,7 +4,56 @@
     <title>Autocomplete Word Lookup like a Boss!</title>
   </head>
   <body>
-    <h1>Search your words!</h1>
-    <input type='text' id='search'> </input>
+    <div id = 'main'>
+      <h1>Search your words!</h1>
+      <input type='text' id='search'> </input>
+      <div  id = 'results'></div>
+    </div>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
+    <style>
+    body {
+      min-height: 100%;
+      height: 100%
+    }
+    #main {
+      height: 70%;
+    }
+    #quint {
+      height: 30%;
+      bottom: 0;
+      position: fixed;
+    }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+    <script>
+    test('search for words beginning with awes', function(assert){
+      var done = assert.async();
+      $.get('/find/awes/', function handler(data) {
+        var words = data.split(',');
+        assert.equal(words.length, 4, 'number of suggestions for awes is 4');
+        done();
+      })
+    });
+    </script>
+    <script>
+      $('#search').keyup(function(e){
+        var word = $('#search').val();
+        if (word.length > 2){
+          $.get('/find/'+word, function handler(data) {
+            var words = data.split(',');
+            var results = '';
+            words.forEach(function(w) {
+              results += "<p> " + w + "</p>";
+            });
+            $('#results').html(results);
+          });
+        }
+      });
+    </script>
+
+
   </body>
 </html>

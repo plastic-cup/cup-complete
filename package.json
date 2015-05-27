@@ -1,6 +1,6 @@
 {
-  "name": "autocomplete-original",
-  "version": "1.0.3",
+  "name": "autocomplete-cuppy",
+  "version": "1.0.0",
   "description": "type a bit, get some nice words",
   "main": "index.js",
   "directories": {
@@ -8,11 +8,20 @@
   },
   "scripts": {
     "test": "node test/test.js",
-    "coverage": "./node_modules/.bin/istanbul cover test/test.js"
+    "nocov": "node test/*.js",
+    "coverage": "istanbul cover test/*.js && ./node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "codeclimate": "CODECLIMATE_REPO_TOKEN=1c0b40358b6943d3ecd94d6254d5cd2ac5dfc51188b4019bfca83b9b8a3542e2 ./node_modules/codeclimate-test-reporter/bin/codeclimate.js < ./coverage/lcov.info",
+    "jshint": "jshint -c .jshintrc --exclude-path .gitignore .",
+    "start": "node server.js",
+    "nodemon": "nodemon ./server.js"
   },
+  "pre-commit": [
+    "jshint",
+    "coverage"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/rjmk/autocomplete.git"
+    "url": "https://github.com/plastic-cup/cup-complete.git"
   },
   "keywords": [
     "autocomplete",
@@ -21,10 +30,15 @@
   "author": "rjmk",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rjmk/autocomplete/issues"
+    "url": "https://github.com/plastic-cup/cup-complete/issues"
   },
-  "homepage": "https://github.com/rjmk/autocomplete",
+  "homepage": "https://github.com/plastic-cup/cup-complete",
   "devDependencies": {
-    "istanbul": "^0.3.14"
+    "istanbul": "^0.3.14",
+    "pre-commit": "^1.0.7"
+  },
+  "dependencies": {
+    "istanbul": "^0.3.14",
+    "pre-commit": "^1.0.7"
   }
 }

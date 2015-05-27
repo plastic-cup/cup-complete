@@ -9,3 +9,6 @@ Easily find words in the English dictionary :)
 * [x] Record the string that was searched for (for stats and graphs)
 
 ### Autocomplete Website
+
+* [ ] serve an html page with a search box
+* [ ] expose the findWords method as an API endpoint
