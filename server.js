@@ -14,8 +14,7 @@ http.createServer(function handler(request, response){
   if (url.length === 1){
     response.writeHead(200,{'Content-Type': 'text/html'});
     response.end(index.toString());
-  }
-  if(url.indexOf('/find/') > - 1){
+  } else if(url.indexOf('/find/') > - 1){
     //localhost:3000/find/word
     var word = url.split('/')[2];
     ac.findWord(word, function(err, found){
@@ -23,10 +22,23 @@ http.createServer(function handler(request, response){
       response.end(found.join(','));
     });
     // response.end('word:', word);
-  }
-  else {
-    response.end('hello Rafe!');
-  }
+    } else if (url.indexOf('/test/') > -1){
+        var file = url.split('/')[2];
+        response.end(fs.readFileSync(__dirname + '/test/' + file));
+    } else {
+        console.log(__dirname);
+        fs.readFile(__dirname + url, function(err, data){
+            if (err){
+                console.log(err);
+                response.end();
+            } else {
+                var ext = url.split('.')[1];
+                console.log(ext);
+                response.writeHead(200, {'Content-Type' : 'text/' + ext});
+                response.end(data);
+            }
+        });
+    }
 
 }).listen(port);
 
