@@ -22,11 +22,9 @@ test('suggestions toggle when clicked/touched', function(assert){
     var target = document.getElementById('iframe').contentWindow.document;
     var search = target.getElementById('search');
     search.value = 'fun';
+    var event = new Event('keyup');
+    search.dispatchEvent(event);
 
-    var e = new KeyboardEvent('e', {code: '78'});
-    search.dispatchEvent("keyup", e);
-
-    //iQuery('#search').trigger('keyup', null, target);
     setTimeout(function(){
         var suggestion = target.getElementsByClassName('suggestion')[0];
         console.log(suggestion);

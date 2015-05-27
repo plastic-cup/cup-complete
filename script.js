@@ -28,10 +28,10 @@ function suggestionUpdater(){
 function getDefinition(){
     var definition;
     if (this.children.length > 1){
-        this.removeChild(this.lastChild)
+        this.removeChild(this.lastChild);
     } else {
         var word = this.getElementsByClassName('word')[0].innerHTML;
-        var request = new XMLHttpRequest;
+        var request = new XMLHttpRequest();
         request.open('GET', '/define/' + word);
         request.onreadystatechange = function(){
             if (request.readyState === 4){
@@ -39,13 +39,13 @@ function getDefinition(){
                     definition = request.responseText;
                 }
             }
-        }
+        };
         this.innerHTML += '<p>' + definition + '</p>';
     }
 }
 
 return {
     getDefinition: getDefinition
-}
+};
 
 }());
