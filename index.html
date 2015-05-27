@@ -7,7 +7,7 @@
     <div id = 'main'>
       <h1>Search your words!</h1>
       <input type='text' id='search'> </input>
-      <div  id = 'results'></div>
+      <div id ='results'></div>
     </div>
     <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
     <style>
@@ -28,16 +28,38 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+
     <script>
     test('search for words beginning with awes', function(assert){
       var done = assert.async();
-      $.get('/find/awes/', function handler(data) {
+      $.get('/find/awes/', function handler(data) { // appends '/find/awes/' to localhost, which gives us stuff
         var words = data.split(',');
+        console.log("Words: " + words);
+        console.log("1st word: " + words[0]);
         assert.equal(words.length, 4, 'number of suggestions for awes is 4');
         done();
       })
     });
+
+    test('elements in found array are clickable', function(assert){
+      console.log("here we are");
+      var done = assert.async();
+      $.get('/find/awes/', function handler(data) { // appends '/find/awes/' to localhost, which gives us stuff
+        var words = data.split(',');
+        if (words.length === 0){
+          console.log("Found array is empty");
+        }
+        else {
+            $('#results').first().click(function(){
+              var found0 = console.log("hello");
+            });
+          assert.equal(found0,'hello', 'click function works you rockkkkkk');
+        }
+        done();
+      });
+    });
     </script>
+
     <script>
       $('#search').keyup(function(e){
         var word = $('#search').val();
