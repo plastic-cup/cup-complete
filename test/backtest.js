@@ -10,7 +10,7 @@ ac.import(function(err, words){
   assert.equal(words.length, 235886);
 });
 
-console.log('attempt to invoke ac.import without a valid callback');
+console.log('# attempt to invoke ac.import without a valid callback');
 var error = ac.import('string');
 assert.equal(error.message, 'function plz');
 
@@ -29,10 +29,6 @@ ac.import(function(){
   ac.stats('awesome', function (err, stats) {
     assert.equal(stats.awesome.length, 1);
   });
-});
-
-console.log('# checks works with pre-existing objects');
-ac.import(function(){
   ac.stats('awesome', function (err, stats){
     assert.equal(stats.awesome.length, 2);
   });
