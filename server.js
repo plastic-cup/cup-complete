@@ -23,14 +23,11 @@ http.createServer(function handler(request, response){
     });
     // response.end('word:', word);
     } else {
-        console.log(__dirname);
         fs.readFile(__dirname + url, function(err, data){
             if (err){
-                console.log(err);
                 response.end();
             } else {
                 var ext = url.split('.')[1];
-                console.log(ext);
                 response.writeHead(200, {'Content-Type' : 'text/' + ext});
                 response.end(data);
             }
