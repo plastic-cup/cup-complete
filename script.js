@@ -28,6 +28,16 @@ function suggestionUpdater(){
     });
 }
 
+function defAppend(definition){
+  this.innerHTML += '<p class = "definition">' + definition + '</p>';
+  var heightToggle = function(){
+    this.lastChild.className += ' show';
+  }.bind(this);
+  setTimeout(function(){
+    heightToggle();
+  },0);
+}
+
 function getDefinition(){
     var definition;
     if (this.children.length > 1){
@@ -40,16 +50,11 @@ function getDefinition(){
             if (request.readyState === 4){
                 if (request.status === 200){
                     definition = request.responseText;
+                    defAppend(definition);
                 }
             }
         };
-        this.innerHTML += '<p class = "definition">' + definition + '</p>';
-        var heightToggle = function(){
-          this.lastChild.className += ' show';
-        }.bind(this);
-        setTimeout(function(){
-          heightToggle();
-        },0);
+        request.send();
     }
 }
 
@@ -66,7 +71,7 @@ function getStats(){
                 return stats;
             }
         }
-    }
+    };
 }
 
 function showStats(){
