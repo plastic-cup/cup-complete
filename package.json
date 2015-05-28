@@ -17,7 +17,8 @@
   },
   "pre-commit": [
     "jshint",
-    "coverage"
+    "coverage",
+    "codeclimate"
   ],
   "repository": {
     "type": "git",
