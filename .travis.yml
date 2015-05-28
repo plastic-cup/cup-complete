@@ -6,3 +6,8 @@ node_js:
 script:
   - npm test
   - npm run coverage
+addons:
+  code_climate:
+    repo_token: 1c0b40358b6943d3ecd94d6254d5cd2ac5dfc51188b4019bfca83b9b8a3542e2
+after_script:
+  - npm run codeclimate
