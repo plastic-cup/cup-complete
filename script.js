@@ -88,7 +88,7 @@ function showStats(){
 function parseStats(data){
     var result = '';
     data = JSON.parse(data);
-    for (string in data){
+    for (var string in data){
         result += '<strong>' + string + '</strong>: ' + data[string].length + '<br>';
     }
     return result;
