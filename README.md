@@ -2,6 +2,8 @@
 
 Easily find words in the English dictionary :)
 
+[![Build Status](https://travis-ci.org/plastic-cup/cup-complete.svg?branch=master)](https://travis-ci.org/plastic-cup/cup-complete)
+
 ### Autocomplete Module
 
 * [x] we're gonna, like, import like ... like a list, I guess? and we're gonna put it in an array called 'words'. Cos that's what it'll be. Words.
