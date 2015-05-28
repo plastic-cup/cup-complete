@@ -3,7 +3,11 @@ node_js:
   - "0.12"
   - "0.11"
   - "0.10"
-  - "0.8"
-  - "0.6"
-  - "iojs"
-  - "iojs-v1.0.4" 
+script:
+  - npm test
+  - npm run coverage
+addons:
+  code_climate:
+    repo_token: 1c0b40358b6943d3ecd94d6254d5cd2ac5dfc51188b4019bfca83b9b8a3542e2
+after_script:
+  - npm run codeclimate
