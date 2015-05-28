@@ -10,5 +10,7 @@ Easily find words in the English dictionary :)
 
 ### Autocomplete Website
 
-* [ ] serve an html page with a search box
-* [ ] expose the findWords method as an API endpoint
+* [x] serve an html page with a search box
+* [x] expose the findWords method as an API endpoint
+* [ ] display the ***definiton*** of a word when the person clicks/taps (*or navigates using the keyboard arrows -- for extra credits!*) to their desired word
+* [ ] display the ***history*** of words people have searched for
