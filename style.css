@@ -52,15 +52,18 @@ h1 {
 .definition {
   max-height: 0;
   overflow: hidden;
-  -webkit-transition: all 3s;
-  transition: all 3s;
   padding: 0;
+  -webkit-transition: max-height 1s linear;
+  transition: max-height 1s linear;
+  -webkit-transition: padding 0.1s linear;
+  transition: padding 0.1s linear;
 }
 
 .definition.show {
   max-height:100px;
   -webkit-transition: all 3s;
   transition: all 3s;
+  padding-bottom: 2vh;
 }
 
 .button {

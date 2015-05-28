@@ -3,7 +3,8 @@ var ClientSide = (function(){
 var suggestions,
     buttons = [].slice.call(document.getElementsByClassName('button')),
     statsDiv = document.getElementById('stats'),
-    mainDiv = document.getElementById('main');
+    mainDiv = document.getElementById('main'),
+    statsContent = document.getElementById('statsContent');
 
 $('#search').keyup(function(e){
   var word = $('#search').val();
@@ -28,11 +29,13 @@ function suggestionUpdater(){
     });
 }
 
-function defAppend(definition){
-  this.innerHTML += '<p class = "definition">' + definition + '</p>';
+function defAppend(definition, self){
+    console.log(definition);
+  self.innerHTML += '<p class = "definition">' + definition + '</p>';
   var heightToggle = function(){
+      console.log(this);
     this.lastChild.className += ' show';
-  }.bind(this);
+}.bind(self);
   setTimeout(function(){
     heightToggle();
   },0);
@@ -40,6 +43,7 @@ function defAppend(definition){
 
 function getDefinition(){
     var definition;
+    var that = this;
     if (this.children.length > 1){
         this.removeChild(this.lastChild);
     } else {
@@ -49,8 +53,8 @@ function getDefinition(){
         request.onreadystatechange = function(){
             if (request.readyState === 4){
                 if (request.status === 200){
-                    definition = request.responseText;
-                    defAppend(definition);
+                    definition = request.responseText || 'put definition here';
+                    defAppend(definition, that);
                 }
             }
         };
@@ -58,7 +62,7 @@ function getDefinition(){
     }
 }
 
-function getStats(){
+function getStats(callback){
     var stats;
     var request = new XMLHttpRequest();
     request.open('GET', '/stats/');
@@ -67,19 +71,27 @@ function getStats(){
         if (request.readyState === 4){
             if (request.status === 200){
                 stats = request.responseText;
-                console.log(request.readyState, request.status);
-                return stats;
+                callback(stats);
             }
         }
     };
 }
 
 function showStats(){
-    statsDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
-    mainDiv .className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
-    var stats = document.createElement('p');
-    stats.innerHTML = getStats();
-    statsDiv.appendChild(stats);
+    getStats(function(data){
+        statsDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+        mainDiv .className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+        statsContent.innerHTML = parseStats(data);
+    });
+}
+
+function parseStats(data){
+    var result = '';
+    data = JSON.parse(data);
+    for (string in data){
+        result += '<strong>' + string + '</strong>: ' + data[string].length + '<br>';
+    }
+    return result;
 }
 
 buttons.forEach(function(button){
