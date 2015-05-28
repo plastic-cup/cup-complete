@@ -8,7 +8,7 @@ test('search for words beginning with awes', function(assert){
     var words = data.split(',');
     assert.equal(words.length, 4, 'number of suggestions for awes is 4');
     done();
-  })
+  });
 });
 
 test('search box is exists and is massive', function(assert){
