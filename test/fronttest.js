@@ -31,9 +31,11 @@ test('suggestions toggle when clicked/touched', function(assert){
         var suggestionNumber = suggestion.children.length;
         suggestion.click();
         assert.equal(suggestion.children.length, suggestionNumber + 1);
-        setTimeout(function(){assert.ok(suggestion.lastChild.style.height > 0);},50);
-        suggestion.click();
-        assert.equal(suggestion.children.length, suggestionNumber);
-        done();
+        setTimeout(function(){
+          assert.ok(suggestion.lastChild.style.height > 0);
+          suggestion.click();
+          assert.equal(suggestion.children.length, suggestionNumber);
+          done();
+        },50);
     }, 1000);
 });
