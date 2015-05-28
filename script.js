@@ -1,6 +1,10 @@
 var ClientSide = (function(){
 
-var suggestions;
+var suggestions,
+    buttons = [].slice.call(document.getElementsByClassName('button')),
+    statsDiv = document.getElementById('stats'),
+    mainDiv = document.getElementById('main'),
+    statsContent = document.getElementById('statsContent');
 
 $('#search').keyup(function(e){
   var word = $('#search').val();
@@ -9,6 +13,7 @@ $('#search').keyup(function(e){
       var words = data.split(',');
       var results = '';
       words.forEach(function(w) {
+        w = w.split(word).join("<span class='highlight'>" + word + "</span>");
         results += "<div class='suggestion'><p class='word'> " + w + "</p></div>";
       });
       $('#results').html(results);
@@ -17,7 +22,6 @@ $('#search').keyup(function(e){
   }
 });
 
-
 function suggestionUpdater(){
     suggestions = [].slice.call(document.getElementsByClassName('suggestion'));
     suggestions.forEach(function(element){
@@ -25,8 +29,21 @@ function suggestionUpdater(){
     });
 }
 
+function defAppend(definition, self){
+    console.log(definition);
+  self.innerHTML += '<p class = "definition">' + definition + '</p>';
+  var heightToggle = function(){
+      console.log(this);
+    this.lastChild.className += ' show';
+}.bind(self);
+  setTimeout(function(){
+    heightToggle();
+  },0);
+}
+
 function getDefinition(){
     var definition;
+    var that = this;
     if (this.children.length > 1){
         this.removeChild(this.lastChild);
     } else {
@@ -36,19 +53,50 @@ function getDefinition(){
         request.onreadystatechange = function(){
             if (request.readyState === 4){
                 if (request.status === 200){
-                    definition = request.responseText;
+                    definition = request.responseText || 'put definition here';
+                    defAppend(definition, that);
                 }
             }
         };
-        this.innerHTML += '<p class = "definition">' + definition + '</p>';
-        var heightToggle = function(){
-          this.lastChild.className += ' show';
-        }.bind(this);
-        setTimeout(function(){
-          heightToggle();
-        },0);
+        request.send();
     }
 }
+
+function getStats(callback){
+    var stats;
+    var request = new XMLHttpRequest();
+    request.open('GET', '/stats/');
+    request.send();
+    request.onreadystatechange = function(){
+        if (request.readyState === 4){
+            if (request.status === 200){
+                stats = request.responseText;
+                callback(stats);
+            }
+        }
+    };
+}
+
+function showStats(){
+    getStats(function(data){
+        statsDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+        mainDiv .className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+        statsContent.innerHTML = parseStats(data);
+    });
+}
+
+function parseStats(data){
+    var result = '';
+    data = JSON.parse(data);
+    for (var string in data){
+        result += '<strong>' + string + '</strong>: ' + data[string].length + '<br>';
+    }
+    return result;
+}
+
+buttons.forEach(function(button){
+    button.addEventListener('click', showStats);
+});
 
 return {
     getDefinition: getDefinition
