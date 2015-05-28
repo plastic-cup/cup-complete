@@ -7,6 +7,7 @@ ac.import(function(err, count){
 var fs = require('fs');
 var index = fs.readFileSync(__dirname + '/index.html');
 
+
 http.createServer(function handler(request, response){
   var word;
   console.log(request.url);

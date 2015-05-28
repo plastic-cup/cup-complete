@@ -47,46 +47,18 @@ ac.getDefinition = function(word, callback){
   }
   //var page;
   /*API stuff here, pass it @param word*/
+  
   var wikiURL = 'http://en.wiktionary.org/w/index.php?title=' + word + '&action=raw';
-  request(wikiURL, function cb(err, response, body){
+  request = (wikiURL, function cb(err, response, body){
     if (err){
       return new Error("Couldn't access wiki");
     }
-    // if (response !== 200){
-    //   return new Error("Status code: " + response.statusCode);
-    // }
 
     var definition = 'no definition yet';
-    // var regTagWith3PlusEquals = /===+\w+===+/;
-    // var regHashSpace = /#+ /;
-    // var regAllBetweenEquals = /\n=+\w+=+\n/;
-    // var regTagFirstHalf = /={2,}\S/;
-    // var regAllEquals = /={2,}/g;
-    //
-    var regAllEquals = /={2,}/g;
-    var regHashTag = /#+ /g;
-    var def;
-    var array = body.split(regAllEquals);
-    console.log("ARRAY: " + array + '\n');
-
-    for (var i = 0; i < array.length; i++){
-        if (array[i] === 'Noun'){
-            def = array[i+1];
-        }
-    }
-
-    console.log("OUR NOUN: "+ def);
-    console.log(typeof def);
-
-    for (var j = 0; j < def.length; j++){
-      if (def[j].match(regHashTag)){
-          console.log("Definitions: " + splitDef[i]);
-      }
-    }
 
     //console.log("Sliced out: " + definition);
   });
-  return callback(null, 'this will contain info eventually');
+  return callback(null, definition);
 };
 
 

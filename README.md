@@ -12,3 +12,8 @@ Easily find words in the English dictionary :)
 
 * [ ] serve an html page with a search box
 * [ ] expose the findWords method as an API endpoint
+
+##Backend
+###Getting at our data
+* Using regular expressions to parse Wiki markdown page
+* Accessing API with node 'request' module
