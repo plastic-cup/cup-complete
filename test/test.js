@@ -1,4 +1,4 @@
-var assert = require('assert');
+6cfvar assert = require('assert');
 var ac = require('../index.js');
 
 
