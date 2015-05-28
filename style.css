@@ -9,8 +9,8 @@ body {
   font-family: sans-serif;
 }
 
-#main {
-  height: 70%;
+h1 {
+    font-size: 8vh;
 }
 
 #qunit {
@@ -45,7 +45,7 @@ body {
     padding: 1.5vh;
 }
 
-.suggestion:nth-of-type(2n) {
+.suggestion:nth-of-type(2n-1) {
     background-color: lightblue;
 }
 
@@ -61,4 +61,18 @@ body {
   max-height:100px;
   -webkit-transition: all 3s;
   transition: all 3s;
+}
+
+.button {
+    position: absolute;
+    top: 2.5vh;
+    right: 10vw;
+}
+
+.hidden {
+    display: none;
+}
+
+.highlight {
+    color: red;
 }

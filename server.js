@@ -22,17 +22,20 @@ http.createServer(function handler(request, response){
       response.end(found.join(','));
     });
     // response.end('word:', word);
-    } else {
-        fs.readFile(__dirname + url, function(err, data){
-            if (err){
-                response.end();
-            } else {
-                var ext = url.split('.')[1];
-                response.writeHead(200, {'Content-Type' : 'text/' + ext});
-                response.end(data);
-            }
-        });
-    }
+} else if(url.split('/')[1] === 'stats'){
+    console.log(ac.searches.toString());
+    response.end(ac.searches.toString());
+  } else {
+    fs.readFile(__dirname + url, function(err, data){
+        if (err){
+            response.end();
+        } else {
+            var ext = url.split('.')[1];
+            response.writeHead(200, {'Content-Type' : 'text/' + ext});
+            response.end(data);
+        }
+    });
+  }
 
 }).listen(port);
 

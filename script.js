@@ -1,6 +1,9 @@
 var ClientSide = (function(){
 
-var suggestions;
+var suggestions,
+    buttons = [].slice.call(document.getElementsByClassName('button')),
+    statsDiv = document.getElementById('stats'),
+    mainDiv = document.getElementById('main');
 
 $('#search').keyup(function(e){
   var word = $('#search').val();
@@ -9,6 +12,7 @@ $('#search').keyup(function(e){
       var words = data.split(',');
       var results = '';
       words.forEach(function(w) {
+        w = w.split(word).join("<span class='highlight'>" + word + "</span>");
         results += "<div class='suggestion'><p class='word'> " + w + "</p></div>";
       });
       $('#results').html(results);
@@ -16,7 +20,6 @@ $('#search').keyup(function(e){
     });
   }
 });
-
 
 function suggestionUpdater(){
     suggestions = [].slice.call(document.getElementsByClassName('suggestion'));
@@ -49,6 +52,34 @@ function getDefinition(){
         },0);
     }
 }
+
+function getStats(){
+    var stats;
+    var request = new XMLHttpRequest();
+    request.open('GET', '/stats/');
+    request.send();
+    request.onreadystatechange = function(){
+        if (request.readyState === 4){
+            if (request.status === 200){
+                stats = request.responseText;
+                console.log(request.readyState, request.status);
+                return stats;
+            }
+        }
+    }
+}
+
+function showStats(){
+    statsDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+    mainDiv .className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+    var stats = document.createElement('p');
+    stats.innerHTML = getStats();
+    statsDiv.appendChild(stats);
+}
+
+buttons.forEach(function(button){
+    button.addEventListener('click', showStats);
+});
 
 return {
     getDefinition: getDefinition
