@@ -15,8 +15,7 @@ http.createServer(function handler(request, response){
   if (url.length === 1){
     response.writeHead(200,{'Content-Type': 'text/html'});
     response.end(index.toString());
-  }
-  else if(url.indexOf('/find/') > - 1){
+  } else if(url.indexOf('/find/') > - 1){
     //localhost:3000/find/word
     word = url.split('/')[2];
     ac.findWord(word, function(err, found){
@@ -37,10 +36,17 @@ http.createServer(function handler(request, response){
       console.log("DEFINITION: " + definition);
       response.end(definition); // returns to client string of found words
     });
-  }
-  else {
-    response.end('hello Rafe!');
-  }
+  } else {
+        fs.readFile(__dirname + url, function(err, data){
+            if (err){
+                response.end();
+            } else {
+                var ext = url.split('.')[1];
+                response.writeHead(200, {'Content-Type' : 'text/' + ext});
+                response.end(data);
+            }
+        });
+    }
 
 }).listen(port); // accepts connections on the specified port
 
