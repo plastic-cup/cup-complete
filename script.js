@@ -40,7 +40,13 @@ function getDefinition(){
                 }
             }
         };
-        this.innerHTML += '<p>' + definition + '</p>';
+        this.innerHTML += '<p class = "definition">' + definition + '</p>';
+        var heightToggle = function(){
+          this.lastChild.className += ' show';
+        }.bind(this);
+        setTimeout(function(){
+          heightToggle();
+        },0);
     }
 }
 

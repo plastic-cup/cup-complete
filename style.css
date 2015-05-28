@@ -48,3 +48,17 @@ body {
 .suggestion:nth-of-type(2n) {
     background-color: lightblue;
 }
+
+.definition {
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: all 3s;
+  transition: all 3s;
+  padding: 0;
+}
+
+.definition.show {
+  max-height:100px;
+  -webkit-transition: all 3s;
+  transition: all 3s;
+}
