@@ -22,9 +22,6 @@ http.createServer(function handler(request, response){
       response.end(found.join(','));
     });
     // response.end('word:', word);
-    } else if (url.indexOf('/test/') > -1){
-        var file = url.split('/')[2];
-        response.end(fs.readFileSync(__dirname + '/test/' + file));
     } else {
         console.log(__dirname);
         fs.readFile(__dirname + url, function(err, data){

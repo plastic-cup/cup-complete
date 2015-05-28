@@ -14,27 +14,8 @@
     <link rel='stylesheet' href='style.css'>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <div id="qunit"></div>
-    <div id="qunit-fixture"></div>
-    <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+    <script src="script.js"></script>
     <script src="test/fronttest.js"></script>
-
-    <script>
-      $('#search').keyup(function(e){
-        var word = $('#search').val();
-        if (word.length > 2){
-          $.get('/find/'+word, function handler(data) {
-            var words = data.split(',');
-            var results = '';
-            words.forEach(function(w) {
-              results += "<p> " + w + "</p>";
-            });
-            $('#results').html(results);
-          });
-        }
-      });
-    </script>
-
 
   </body>
 </html>
