@@ -27,11 +27,15 @@ Is a website with a type box and when type, words that contain what typed come d
 * [ ] display the ***definition*** of a word when the person clicks/taps (*or navigates using the keyboard arrows -- for extra credits!*) to their desired word
 * [ ] display the ***history*** of words people have searched for
 
+
 ## How make? How run?
 
 ### How make
 
 Make with Node and with vanilla javascript (and a teensy bit of jQuery). Use node module `nodemon` to run server and not have to refresh (except sometimes). Use core node modules `fs` and `http` to run server and deal with queries. Backend exposes itself through URL structures and GET requests. Load in text file of words and split it up to array. Has nice methods, filter etc.
+
+* Using regular expressions to parse Wiki markdown page
+* Accessing API with node 'request' module
 
 Frontend use JS and event handlers and refactoring. Use bind because timeout!
 
