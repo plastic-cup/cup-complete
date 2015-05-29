@@ -29,13 +29,13 @@ function suggestionUpdater(){
     });
 }
 
-function defAppend(definition, self){
+function defAppend(definition){
     console.log(definition);
-  self.innerHTML += '<p class = "definition">' + definition + '</p>';
+  this.innerHTML += '<p class = "definition">' + definition + '</p>';
   var heightToggle = function(){
       console.log(this);
     this.lastChild.className += ' show';
-}.bind(self);
+}.bind(this);
   setTimeout(function(){
     heightToggle();
   },0);
@@ -54,7 +54,7 @@ function getDefinition(){
             if (request.readyState === 4){
                 if (request.status === 200){
                     definition = request.responseText || 'put definition here';
-                    defAppend(definition, that);
+                    defAppend.call(that,definition);
                 }
             }
         };
