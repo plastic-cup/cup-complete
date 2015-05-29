@@ -10,7 +10,6 @@ var index = fs.readFileSync(__dirname + '/index.html');
 
 http.createServer(function handler(request, response){
     var word;
-    console.log(request.url);
     var url = request.url;
     if (url.length === 1){
         response.writeHead(200,{'Content-Type': 'text/html'});
@@ -29,8 +28,6 @@ http.createServer(function handler(request, response){
       word = url.split('/')[2];
       ac.define(word, function(err, definition){ // definition has stuff at this point
           if(err){
-              console.log(err);
-              //return err;
               response.end(err);
           }
           //console.log("DEFINITION TO STRING: " + definition);
