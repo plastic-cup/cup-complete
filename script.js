@@ -64,7 +64,7 @@ function getDefinition(){
         request.onreadystatechange = function(){
             if (request.readyState === 4){
                 if (request.status === 200){
-                    definition = request.responseText || 'put definition here';
+                    definition = request.responseText || 'no definition found';
                     defAppend.call(that,definition);
                 }
             }
