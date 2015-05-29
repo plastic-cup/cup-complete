@@ -11,6 +11,13 @@ $('#search').keyup(function(e){
   if (word.length > 2){
     $.get('/find/'+word, function handler(data) {
       var words = data.split(',');
+      var startWords = words.filter(function(element){
+          return element.slice(0, word.length) === word;
+      });
+      var midWords = words.filter(function(element){
+          return element.slice(0, word.length) !== word.charAt(0);
+      });
+      words = startWords.concat(midWords);
       var results = '';
       words.forEach(function(w) {
         w = w.split(word).join("<span class='highlight'>" + word + "</span>");
@@ -19,6 +26,8 @@ $('#search').keyup(function(e){
       $('#results').html(results);
       suggestionUpdater();
     });
+  } else if (word.length === 0){
+    $('#results').html('');
   }
 });
 
@@ -29,13 +38,12 @@ function suggestionUpdater(){
     });
 }
 
-function defAppend(definition, self){
+function defAppend(definition){
     console.log(definition);
-  self.innerHTML += '<p class = "definition">' + definition + '</p>';
+  this.innerHTML += '<p class = "definition">' + definition + '</p>';
   var heightToggle = function(){
-      console.log(this);
     this.lastChild.className += ' show';
-}.bind(self);
+}.bind(this);
   setTimeout(function(){
     heightToggle();
   },0);
@@ -54,7 +62,7 @@ function getDefinition(){
             if (request.readyState === 4){
                 if (request.status === 200){
                     definition = request.responseText || 'put definition here';
-                    defAppend(definition, that);
+                    defAppend.call(that,definition);
                 }
             }
         };

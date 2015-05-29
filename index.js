@@ -22,7 +22,7 @@ ac.stats = function(word, callback){
 ac.findWord = function(word, callback, next){
   var statsCallback = next || function(){return;};
   var found = ac.words.filter(function(element){
-    return element.indexOf(word) === 0;
+    return element.indexOf(word) >= 0;
   });
   ac.stats(word,statsCallback);
   console.log(ac.searches);
