@@ -26,6 +26,8 @@ $('#search').keyup(function(e){
       $('#results').html(results);
       suggestionUpdater();
     });
+  } else if (word.length === 0){
+    $('#results').html('');
   }
 });
 
