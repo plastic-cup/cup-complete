@@ -27,15 +27,33 @@ test('suggestions toggle when clicked/touched', function(assert){
 
     setTimeout(function(){
         var suggestion = target.getElementsByClassName('suggestion')[0];
-        console.log(suggestion);
         var suggestionNumber = suggestion.children.length;
         suggestion.click();
-        assert.equal(suggestion.children.length, suggestionNumber + 1);
         setTimeout(function(){
-          assert.ok(suggestion.lastChild.style.height > 0);
-          suggestion.click();
-          assert.equal(suggestion.children.length, suggestionNumber);
-          done();
-        },50);
+            assert.equal(suggestion.children.length, suggestionNumber + 1);
+            setTimeout(function(){
+            console.log(window.getComputedStyle(suggestion.lastChild).height);
+              assert.ok(parseInt(window.getComputedStyle(suggestion.lastChild).height, 10) > 0);
+              suggestion.click();
+              assert.equal(suggestion.children.length, suggestionNumber);
+              done();
+          },1000);
+      }, 1000);
+    }, 1000);
+});
+
+test('clicking the stats button gets the stats', function(assert){
+    var done = assert.async();
+    var target = document.getElementById('iframe').contentWindow.document;
+    var search = target.getElementById('search');
+    var statsButton = target.getElementById('statsButton');
+    var statsContent = target.getElementById('statsContent');
+    search.value = 'fun';
+    var event = new Event('keyup');
+    search.dispatchEvent(event);
+    statsButton.click();
+    setTimeout(function(){
+        assert.ok(statsContent.children.length);
+        done();
     }, 1000);
 });
