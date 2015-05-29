@@ -44,9 +44,9 @@ ac.define = function (word, callback, specificURL){
             body += chunk;
         });
       response.on('end', function(){
-
           var json2object = JSON.parse(body).query.pages;
           var pageContent;
+          if (json2object[-1]) {return callback('no definition found', '');}
           for (var key in json2object){
               pageContent = json2object[key].revisions[0]['*'];
           }
