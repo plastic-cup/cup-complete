@@ -11,6 +11,13 @@ $('#search').keyup(function(e){
   if (word.length > 2){
     $.get('/find/'+word, function handler(data) {
       var words = data.split(',');
+      var startWords = words.filter(function(element){
+          return element.charAt(0) === word.charAt(0);
+      });
+      var midWords = words.filter(function(element){
+          return element.charAt(0) !== word.charAt(0);
+      });
+      words = startWords.concat(midWords);
       var results = '';
       words.forEach(function(w) {
         w = w.split(word).join("<span class='highlight'>" + word + "</span>");
@@ -30,10 +37,8 @@ function suggestionUpdater(){
 }
 
 function defAppend(definition, self){
-    console.log(definition);
   self.innerHTML += '<p class = "definition">' + definition + '</p>';
   var heightToggle = function(){
-      console.log(this);
     this.lastChild.className += ' show';
 }.bind(self);
   setTimeout(function(){
