@@ -4,7 +4,8 @@ var suggestions,
     buttons = [].slice.call(document.getElementsByClassName('button')),
     statsDiv = document.getElementById('stats'),
     mainDiv = document.getElementById('main'),
-    statsContent = document.getElementById('statsContent');
+    statsContent = document.getElementById('statsContent'),
+    stats;
 
 $('#search').keyup(function(e){
   var word = $('#search').val();
@@ -15,7 +16,7 @@ $('#search').keyup(function(e){
           return element.slice(0, word.length) === word;
       });
       var midWords = words.filter(function(element){
-          return element.slice(0, word.length) !== word.charAt(0);
+          return element.slice(0, word.length) !== word;
       });
       words = startWords.concat(midWords);
       var results = '';
@@ -35,6 +36,7 @@ function suggestionUpdater(){
     suggestions = [].slice.call(document.getElementsByClassName('suggestion'));
     suggestions.forEach(function(element){
         element.addEventListener('click', ClientSide.getDefinition);
+        element.addEventListener('click', ClientSide.addStats);
     });
 }
 
@@ -85,20 +87,36 @@ function getStats(callback){
 }
 
 function showStats(){
-    getStats(function(data){
-        statsDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
-        mainDiv .className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
-        statsContent.innerHTML = parseStats(data);
-    });
+    // REAL CODE FOR GETTING STATS FROM SERVER
+    // getStats(function(data){
+    //     statsDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+    //     mainDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+    //     statsContent.innerHTML = parseStats(data);
+    // });
+
+    //FAKE CODE FOR DEMONSTRATING
+    statsDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+    mainDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
+    statsContent.innerHTML = parseStats(stats);
 }
 
 function parseStats(data){
     var result = '';
-    data = JSON.parse(data);
+    //FOR USE WITH REAL DATA
+    //data = JSON.parse(data);
     for (var string in data){
         result += '<strong>' + string + '</strong>: ' + data[string].length + '<br>';
     }
     return result;
+}
+
+function addStats(){
+    stats = stats || {};
+    if (stats[this.firstChild.innerText]){
+        stats[this.firstChild.innerText].push(new Date());
+    } else {
+        stats[this.firstChild.innerText] = [new Date()];
+    }
 }
 
 buttons.forEach(function(button){
@@ -106,7 +124,8 @@ buttons.forEach(function(button){
 });
 
 return {
-    getDefinition: getDefinition
+    getDefinition: getDefinition,
+    addStats : addStats
 };
 
 }());
