@@ -51,6 +51,7 @@ h1 {
 
 .definition {
   max-height: 0;
+  font-size: 4vh;
   overflow: hidden;
   padding: 0;
   -webkit-transition: max-height 1s linear;

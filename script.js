@@ -5,6 +5,8 @@ var suggestions,
     statsDiv = document.getElementById('stats'),
     mainDiv = document.getElementById('main'),
     statsContent = document.getElementById('statsContent'),
+    canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d'),
     stats;
 
 $('#search').keyup(function(e){
@@ -36,7 +38,6 @@ function suggestionUpdater(){
     suggestions = [].slice.call(document.getElementsByClassName('suggestion'));
     suggestions.forEach(function(element){
         element.addEventListener('click', ClientSide.getDefinition);
-        element.addEventListener('click', ClientSide.addStats);
     });
 }
 
@@ -68,6 +69,7 @@ function getDefinition(){
             }
         };
         request.send();
+        addStats.call(that);
     }
 }
 
@@ -97,7 +99,19 @@ function showStats(){
     //FAKE CODE FOR DEMONSTRATING
     statsDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
     mainDiv.className = statsDiv.className.indexOf('hidden') > -1 ? '' : 'hidden';
-    statsContent.innerHTML = parseStats(stats);
+    var i = 0;
+    ctx.clearRect(0, 310, 300, 300);
+    for (var word in stats){
+        ctx.save();
+        ctx.translate(250,250);
+        ctx.rotate(90 * Math.PI / 180);
+        ctx.font = "24px sans-serif";
+        ctx.fillText(word, 60, 225 - i);
+        ctx.fillStyle = 'purple';
+        ctx.fillRect(50, 212-i, -(15 * stats[word].length), 15);
+        ctx.restore();
+        i += 30;
+    }
 }
 
 function parseStats(data){
@@ -117,7 +131,23 @@ function addStats(){
     } else {
         stats[this.firstChild.innerText] = [new Date()];
     }
+    console.log(stats);
 }
+
+var drawGraph = (function(){
+    ctx.beginPath();
+    ctx.moveTo(15,300);
+    ctx.lineTo(15,0);
+    ctx.stroke();
+    ctx.font = "12 px sans-serif";
+    ctx.fillText('0', 5, 300);
+    ctx.fillText('10', 0, 150);
+    ctx.fillText('20', 0, 10);
+    ctx.beginPath();
+    ctx.moveTo(15,300);
+    ctx.lineTo(400,300);
+    ctx.stroke();
+}());
 
 buttons.forEach(function(button){
     button.addEventListener('click', showStats);
