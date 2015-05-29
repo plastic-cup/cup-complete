@@ -1,4 +1,4 @@
-6cfvar assert = require('assert');
+var assert = require('assert');
 var ac = require('../index.js');
 
 
@@ -32,4 +32,26 @@ ac.import(function(){
   ac.stats('awesome', function (err, stats){
     assert.equal(stats.awesome.length, 2);
   });
+});
+
+console.log('# err is null, thus no error');
+ac.define('cat', function (err, definitionString){
+    assert.equal(err, null);
+});
+
+console.log("# we get an error when wiktionary can't be reached");
+ac.define('a', function (err, definitionString){
+    assert.ok(err);
+}, "ohfoashfiodhjfaeffas");
+
+
+
+console.log('# Definition gives some string as definition');
+ac.define('cat', function (err, definitionString){
+    assert.notEqual(definitionString, "");
+});
+
+console.log('# Definition gives the correct definition');
+ac.define('cat', function (err, definitionString){
+    assert.notEqual(definitionString, "An animal of the family Felidae");
 });
