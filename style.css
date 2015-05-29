@@ -77,5 +77,6 @@ h1 {
 }
 
 .highlight {
-    color: red;
+    color: #c0c;
+    font-weight: bold;
 }
