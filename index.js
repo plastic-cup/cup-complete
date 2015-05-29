@@ -1,5 +1,4 @@
 var fs = require('fs');
-var request = require('request'); // for the requesting stuff
 var ac = {};
 var http = require('http');
 
