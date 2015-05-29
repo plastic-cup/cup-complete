@@ -130,10 +130,25 @@ ac.define = function (word, callback, specificURL){
           };
 
           var definitionObject = getDefs(pageContent);
+          console.log(definitionObject);
           var definitionString = "";
           for (var partOfSpeech in definitionObject){
+
+              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                  return e.replace(/ \w+\|/g, " ");
+              });
+              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                  return e.replace(/''/g, "");
+              });
+              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                  return e.replace(/#+/g, "");
+              });
               definitionString += definitionObject[partOfSpeech] +"\n";
+
+
           }
+
+
 
           return callback(null, definitionString);
 
