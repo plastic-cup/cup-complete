@@ -16,5 +16,5 @@ Easily find words in the English dictionary :)
 
 * [x] serve an html page with a search box
 * [x] expose the findWords method as an API endpoint
-* [ ] display the ***definiton*** of a word when the person clicks/taps (*or navigates using the keyboard arrows -- for extra credits!*) to their desired word
+* [ ] display the ***definition*** of a word when the person clicks/taps (*or navigates using the keyboard arrows -- for extra credits!*) to their desired word
 * [ ] display the ***history*** of words people have searched for
