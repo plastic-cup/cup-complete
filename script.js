@@ -12,10 +12,10 @@ $('#search').keyup(function(e){
     $.get('/find/'+word, function handler(data) {
       var words = data.split(',');
       var startWords = words.filter(function(element){
-          return element.charAt(0) === word.charAt(0);
+          return element.slice(0, word.length) === word;
       });
       var midWords = words.filter(function(element){
-          return element.charAt(0) !== word.charAt(0);
+          return element.slice(0, word.length) !== word.charAt(0);
       });
       words = startWords.concat(midWords);
       var results = '';
