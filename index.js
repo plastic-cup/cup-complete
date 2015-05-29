@@ -44,9 +44,9 @@ ac.define = function (word, callback, specificURL){
             body += chunk;
         });
       response.on('end', function(){
-
           var json2object = JSON.parse(body).query.pages;
           var pageContent;
+          if (json2object[-1]) {return callback('no definition found', '');}
           for (var key in json2object){
               pageContent = json2object[key].revisions[0]['*'];
           }
@@ -130,10 +130,25 @@ ac.define = function (word, callback, specificURL){
           };
 
           var definitionObject = getDefs(pageContent);
+          console.log(definitionObject);
           var definitionString = "";
           for (var partOfSpeech in definitionObject){
+
+              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                  return e.replace(/ \w+\|/g, " ");
+              });
+              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                  return e.replace(/''/g, "");
+              });
+              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                  return e.replace(/#+/g, "");
+              });
               definitionString += definitionObject[partOfSpeech] +"\n";
+
+
           }
+
+
 
           return callback(null, definitionString);
 
