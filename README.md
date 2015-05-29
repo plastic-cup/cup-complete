@@ -2,6 +2,10 @@
 
 Easily find words in the English dictionary :)
 
+[![Build Status](https://travis-ci.org/plastic-cup/cup-complete.svg?branch=master)](https://travis-ci.org/plastic-cup/cup-complete)
+[![Code Climate](https://codeclimate.com/github/plastic-cup/cup-complete/badges/gpa.svg)](https://codeclimate.com/github/plastic-cup/cup-complete)
+[![Test Coverage](https://codeclimate.com/github/plastic-cup/cup-complete/badges/coverage.svg)](https://codeclimate.com/github/plastic-cup/cup-complete/coverage)
+
 ### Autocomplete Module
 
 * [x] we're gonna, like, import like ... like a list, I guess? and we're gonna put it in an array called 'words'. Cos that's what it'll be. Words.
