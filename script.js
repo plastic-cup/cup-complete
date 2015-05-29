@@ -58,7 +58,7 @@ function getDefinition(){
     if (this.children.length > 1){
         this.removeChild(this.lastChild);
     } else {
-        var word = this.getElementsByClassName('word')[0].innerHTML;
+        var word = this.getElementsByClassName('word')[0].innerText;
         var request = new XMLHttpRequest();
         request.open('GET', '/define/' + word);
         request.onreadystatechange = function(){
