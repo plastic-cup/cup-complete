@@ -10,13 +10,14 @@ var suggestions,
     stats;
 
 $('#search').keyup(function(e){
-    var word = $('#search').val(),
-        words,
-        startWords,
-        midWords,
-        results;
+    var word = $('#search').val();
+
 
     if (word.length > 2){
+        var words,
+            startWords,
+            midWords,
+            results;
         console.log("stuff being sent: " + word);
         $.get('/find/'+ word, function handler(data) {
             words = data.split(',');
