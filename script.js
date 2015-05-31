@@ -10,28 +10,33 @@ var suggestions,
     stats;
 
 $('#search').keyup(function(e){
-  var word = $('#search').val();
-  if (word.length > 2){
-    $.get('/find/'+word, function handler(data) {
-      var words = data.split(',');
-      var startWords = words.filter(function(element){
-          return element.slice(0, word.length) === word;
-      });
-      var midWords = words.filter(function(element){
-          return element.slice(0, word.length) !== word;
-      });
-      words = startWords.concat(midWords);
-      var results = '';
-      words.forEach(function(w) {
-        w = w.split(word).join("<span class='highlight'>" + word + "</span>");
-        results += "<div class='suggestion'><p class='word'> " + w + "</p></div>";
-      });
-      $('#results').html(results);
-      suggestionUpdater();
-    });
-  } else if (word.length === 0){
-    $('#results').html('');
-  }
+    var word = $('#search').val();
+
+    if (word.length > 2){
+        var words,
+            startWords,
+            midWords,
+            results;
+        $.get('/find/'+ word, function handler(data) {
+            words = data.split(',');
+            startWords = words.filter(function(element){
+                return element.slice(0, word.length) === word;
+            });
+            midWords = words.filter(function(element){
+                return element.slice(0, word.length) !== word.charAt(0);
+            });
+            words = startWords.concat(midWords);
+            results = '';
+            words.forEach(function(w) {
+                w = w.split(word).join("<span class='highlight'>" + word + "</span>");
+                results += "<div class='suggestion'><p class='word'> " + w + "</p></div>";
+            });
+            $('#results').html(results);
+            suggestionUpdater();
+        });
+    } else if (word.length === 0){
+        $('#results').html('');
+    }
 });
 
 function suggestionUpdater(){
@@ -42,25 +47,28 @@ function suggestionUpdater(){
 }
 
 function defAppend(definition){
-    console.log(definition);
-  this.innerHTML += '<p class = "definition">' + definition + '</p>';
-  var heightToggle = function(){
-    this.lastChild.className += ' show';
-}.bind(this);
-  setTimeout(function(){
-    heightToggle();
-  },0);
+    this.innerHTML += '<p class = "definition">' + definition + '</p>';
+    //console.log(definition);
+    var heightToggle = function(){
+        this.lastChild.className += ' show';
+    }.bind(this);
+    setTimeout(function(){
+        heightToggle();
+    },0);
 }
 
 function getDefinition(){
-    var definition;
-    var that = this;
+    var definition,
+        that = this,
+        wordToDefine,
+        request;
+
     if (this.children.length > 1){
         this.removeChild(this.lastChild);
     } else {
-        var word = this.getElementsByClassName('word')[0].innerText;
-        var request = new XMLHttpRequest();
-        request.open('GET', '/define/' + word);
+        wordToDefine = this.getElementsByClassName('word')[0].innerText;
+        request = new XMLHttpRequest();
+        request.open('GET', '/define/' + wordToDefine);
         request.onreadystatechange = function(){
             if (request.readyState === 4){
                 if (request.status === 200){
@@ -75,8 +83,9 @@ function getDefinition(){
 }
 
 function getStats(callback){
-    var stats;
-    var request = new XMLHttpRequest();
+    var stats,
+        request = new XMLHttpRequest();
+
     request.open('GET', '/stats/');
     request.send();
     request.onreadystatechange = function(){
