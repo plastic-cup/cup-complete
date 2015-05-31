@@ -7,18 +7,23 @@ var suggestions,
     statsContent = document.getElementById('statsContent');
 
 $('#search').keyup(function(e){
-    var word = $('#search').val();
+    var word = $('#search').val(),
+        words,
+        startWords,
+        midWords,
+        results;
+
     if (word.length > 2){
         $.get('/find/'+word, function handler(data) {
-            var words = data.split(',');
-            var startWords = words.filter(function(element){
+            words = data.split(',');
+            startWords = words.filter(function(element){
                 return element.slice(0, word.length) === word;
             });
-            var midWords = words.filter(function(element){
+            midWords = words.filter(function(element){
                 return element.slice(0, word.length) !== word.charAt(0);
             });
             words = startWords.concat(midWords);
-            var results = '';
+            results = '';
             words.forEach(function(w) {
                 w = w.split(word).join("<span class='highlight'>" + word + "</span>");
                 results += "<div class='suggestion'><p class='word'> " + w + "</p></div>";
@@ -40,23 +45,26 @@ function suggestionUpdater(){
 
 function defAppend(definition){
     console.log(definition);
-  this.innerHTML += '<p class = "definition">' + definition + '</p>';
-  var heightToggle = function(){
-    this.lastChild.className += ' show';
-}.bind(this);
-  setTimeout(function(){
-    heightToggle();
-  },0);
+    this.innerHTML += '<p class = "definition">' + definition + '</p>';
+    var heightToggle = function(){
+        this.lastChild.className += ' show';
+    }.bind(this);
+    setTimeout(function(){
+        heightToggle();
+    },0);
 }
 
 function getDefinition(){
-    var definition;
-    var that = this;
+    var definition,
+        that = this,
+        word,
+        request;
+
     if (this.children.length > 1){
         this.removeChild(this.lastChild);
     } else {
-        var word = this.getElementsByClassName('word')[0].innerHTML;
-        var request = new XMLHttpRequest();
+        word = this.getElementsByClassName('word')[0].innerHTML;
+        request = new XMLHttpRequest();
         request.open('GET', '/define/' + word);
         request.onreadystatechange = function(){
             if (request.readyState === 4){
@@ -71,8 +79,9 @@ function getDefinition(){
 }
 
 function getStats(callback){
-    var stats;
-    var request = new XMLHttpRequest();
+    var stats,
+        request = new XMLHttpRequest();
+
     request.open('GET', '/stats/');
     request.send();
     request.onreadystatechange = function(){

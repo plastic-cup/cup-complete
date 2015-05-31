@@ -1,12 +1,13 @@
 module.exports = function(body){// calls getHash
 
     // regex used in sliceHash
-    var regAllEquals = /\n?={2,}/g; // gets ==
-    var regHash = /# \w+/g; // gets '# someword'
-    var regHashCurly = /# [{\w]/g; // gets '# {' or '# someword'
-    var regNoHash = /\n?#+\*/; // gets '#*'
+    var regAllEquals = /\n?={2,}/g, // gets ==
+        regHash = /# \w+/g, // gets '# someword'
+        regHashCurly = /# [{\w]/g, // gets '# {' or '# someword'
+        regNoHash = /\n?#+\*/, // gets '#*'
+        sections;
 
-    var sections = body.split(regAllEquals);
+        sections = body.split(regAllEquals);
 
     return getHash(sections);
 
@@ -14,35 +15,28 @@ module.exports = function(body){// calls getHash
         var allDefs = {};
         // loops for all possible parts of speech
         for (var i = 0; i < sectionsArray.length; i++){
-            var defs = [];
+            var partOfSpeech,
+                defs = [];
             // if this contains hashes, gimme gimme gimme
             if (sectionsArray[i].match(regHash)){
                 // console.log("HASHY SECTIONSARRAY[i]");
                 // console.log(sectionsArray[i]);
-                var partOfSpeech = getSpeech(sectionsArray[i]);
+                partOfSpeech = getSpeech(sectionsArray[i]);
                 defs = sliceHash(sectionsArray[i]);
                 if (!(partOfSpeech in allDefs)){
-
                     allDefs[partOfSpeech] = defs;
                 } else {
                   allDefs[partOfSpeech].concat(defs);
                 }
-
                 allDefs[partOfSpeech] = allDefs[partOfSpeech].slice(0,4);
-
              }
-
         }
         return allDefs; // returns to uberfunction getDefs
     }
 
     function getSpeech(hashblockString){
-        var result = "No part of speech found";
-        var before;
-        var beforeIndex;
-        var after;
-        var afterIndex;
-        var pos = [/noun/,/verb/, /adj/, /adv/, /conj/, /prep/];
+        var result = "No part of speech found",
+            pos = [/noun/,/verb/, /adj/, /adv/, /conj/, /prep/];
 
         for (var i = 0; i < pos.length; i++){
             result = pos[i];
