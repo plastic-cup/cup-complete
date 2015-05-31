@@ -41,6 +41,8 @@ $('#search').keyup(function(e){
 
 function suggestionUpdater(){
     suggestions = [].slice.call(document.getElementsByClassName('suggestion'));
+    console.log("Suggestions: ");
+    console.log(suggestions);
     suggestions.forEach(function(element){
         element.addEventListener('click', ClientSide.getDefinition);
     });
@@ -59,8 +61,8 @@ function defAppend(definition){
 
 function getDefinition(){
     var definition,
-        that = this,
-        request;
+        that = this;
+        //request;
 
     if (this.children.length > 1){
         this.removeChild(this.lastChild);
@@ -68,7 +70,7 @@ function getDefinition(){
         console.log("word in getDefinition: " + this.getElementsByClassName('word')[0].innerHTML);
         var wordToDefine = this.getElementsByClassName('word')[0].innerHTML;
 
-        request = new XMLHttpRequest();
+        var request = new XMLHttpRequest();
         request.open('GET', '/define/' + wordToDefine);
         request.onreadystatechange = function(){
             if (request.readyState === 4){
