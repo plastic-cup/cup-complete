@@ -60,17 +60,16 @@ function defAppend(definition){
 function getDefinition(){
     var definition,
         that = this,
-        word,
         request;
 
     if (this.children.length > 1){
         this.removeChild(this.lastChild);
     } else {
+        console.log("word in getDefinition: " + this.getElementsByClassName('word')[0].innerHTML);
+        var wordToDefine = this.getElementsByClassName('word')[0].innerHTML;
 
-        word = this.getElementsByClassName('word')[0].innerHTML;
-        console.log("word in getDefinition: " + word);
         request = new XMLHttpRequest();
-        request.open('GET', '/define/' + word);
+        request.open('GET', '/define/' + wordToDefine);
         request.onreadystatechange = function(){
             if (request.readyState === 4){
                 if (request.status === 200){
