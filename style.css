@@ -51,6 +51,7 @@ h1 {
 
 .definition {
   max-height: 0;
+  font-size: 4vh;
   overflow: hidden;
   padding: 0;
   -webkit-transition: max-height 1s linear;
@@ -60,7 +61,8 @@ h1 {
 }
 
 .definition.show {
-  max-height:100px;
+  max-height:300px;
+  overflow: auto;
   -webkit-transition: all 3s;
   transition: all 3s;
   padding-bottom: 2vh;
@@ -77,5 +79,6 @@ h1 {
 }
 
 .highlight {
-    color: red;
+    color: #c0c;
+    font-weight: bold;
 }

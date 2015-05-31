@@ -44,6 +44,11 @@ ac.define('a', function (err, definitionString){
     assert.ok(err);
 }, "ohfoashfiodhjfaeffas");
 
+console.log("# we return an error when there is no definition");
+ac.define('heloedfndsjklf', function (err, definitionString){
+    assert.ok(err);
+});
+
 
 
 console.log('# Definition gives some string as definition');

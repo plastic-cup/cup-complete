@@ -20,7 +20,7 @@ http.createServer(function handler(request, response){
       //localhost:3000/find/word
       word = url.split('/')[2];
       ac.findWord(word, function(err, found){
-          console.log("Found the following words: " + found);
+          // console.log("Found the following words: " + found);
           response.end(found.join(',')); // returns to client string of found words
       });
       // response.end('word:', word);

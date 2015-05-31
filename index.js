@@ -54,6 +54,7 @@ ac.define = function (word, callback, specificURL){
                 definitionString = "";
 
             json2object = JSON.parse(body).query.pages;
+            console.log(json2object);
 
             for (var key in json2object){
                 pageContent = json2object[key].revisions[0]['*'];

@@ -57,7 +57,6 @@ module.exports = function(body){// calls getHash
                 eachDef.push(noMoreStars[i]);
             }
         }
-        //var regNoSquare = /[[/g;
         eachDef = eachDef.map(function(def){
             return def.replace(/[\[\]]/g, ''); // remove anything between []
         });
