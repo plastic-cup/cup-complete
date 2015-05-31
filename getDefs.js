@@ -12,7 +12,7 @@ module.exports = function(body){// calls getHash
         return definitionString;
 
     function getHash(sectionsArray){
-        console.log(sectionsArray);
+        //console.log(sectionsArray);
         var allDefs = {};
         // loops for all possible parts of speech
         for (var i = 0; i < sectionsArray.length; i++){
@@ -21,11 +21,11 @@ module.exports = function(body){// calls getHash
             // if this contains hashes, gimme gimme gimme
             if (sectionsArray[i].match(regHash)){
                 partOfSpeech = getSpeech(sectionsArray[i]);
-                console.log("part of speech:" + partOfSpeech);
+                //console.log("part of speech:" + partOfSpeech);
                 defs = sliceHash(sectionsArray[i]);
 
-                console.log(partOfSpeech);
-                console.log(defs);
+                // console.log(partOfSpeech);
+                // console.log(defs);
 
 
                 if (!(partOfSpeech in allDefs)){
@@ -49,7 +49,7 @@ module.exports = function(body){// calls getHash
                 break;
             }
         }
-        return result; // returns to getHash
+        return result;//.replace(/\//g, ""); // returns to getHash
     }
 
     function sliceHash(hashblockArray){
@@ -72,10 +72,12 @@ module.exports = function(body){// calls getHash
     }
 
     function makePretty(defsObject){
-        //console.log(defsObject);
+        // console.log("defsobject: ");
+        // console.log(defsObject);
         var definitionString = "";
         for (var partOfSpeech in defsObject){
-
+            // console.log("here i am");
+            // console.log(defsObject[partOfSpeech]);
             defsObject[partOfSpeech] = defsObject[partOfSpeech].map(function(e){
                 return e.replace(/ \w+\|/g, " ");
             });
@@ -85,16 +87,21 @@ module.exports = function(body){// calls getHash
             defsObject[partOfSpeech] = defsObject[partOfSpeech].map(function(e){
                 return e.replace(/#+/g, "");
             });
-        }
-        var bulletNum = 1;
-        defsObject[partOfSpeech].forEach(function(definition){
-            console.log("definition:" + definition);
-            if (definition.match(/[^\s]/)){ // if anything other than a whitespace char exists
-                definitionString += "<strong>" + bulletNum + ".</strong> " + definition + "<br><br>";
-                bulletNum++;
-            }
 
-        });
+            // console.log("object after prettifying");
+            // console.log(defsObject[partOfSpeech]);
+            var bulletNum = 1;
+            defsObject[partOfSpeech].forEach(function(definition){
+                //console.log("definition:" + definition);
+                if (definition.match(/[^\s]/)){ // if anything other than a whitespace char exists
+                    definitionString += "<strong>" + bulletNum + ". " + partOfSpeech + "</strong> " + definition + "<br><br>";
+                    bulletNum++;
+                }
+
+            });
+        }
+
+        //console.log("string in getdefs:" + definitionString);
         return definitionString; // returns a string to uberfunction getDefs
     }
 

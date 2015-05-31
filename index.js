@@ -52,8 +52,8 @@ ac.define = function (word, callback, specificURL){
                 definitionString;
 
             if (json2object[-1]) {
-                console.log("JSON OBJECT (for debugging purposes):");
-                console.log(json2object);
+                // console.log("JSON OBJECT (for debugging purposes):");
+                // console.log(json2object);
                 return callback('no definition found', '');
             }
             for (var key in json2object){
@@ -61,6 +61,7 @@ ac.define = function (word, callback, specificURL){
             }
 
             definitionString = getDefs(pageContent);
+            console.log(definitionString);
             return callback(null, definitionString);
         });
     });

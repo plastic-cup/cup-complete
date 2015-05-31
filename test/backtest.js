@@ -60,3 +60,8 @@ console.log('# Definition gives the correct definition');
 ac.define('cat', function (err, definitionString){
     assert.notEqual(definitionString, "An animal of the family Felidae");
 });
+
+console.log('# Empty definition array elements are suitably handled');
+ac.define('dogberry', function (err, definitionString){
+    assert.equal(definitionString.match(/<\/strong>\s+<br><br>/g), null);
+});
