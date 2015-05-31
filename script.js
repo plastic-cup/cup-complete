@@ -12,13 +12,11 @@ var suggestions,
 $('#search').keyup(function(e){
     var word = $('#search').val();
 
-
     if (word.length > 2){
         var words,
             startWords,
             midWords,
             results;
-        console.log("stuff being sent: " + word);
         $.get('/find/'+ word, function handler(data) {
             words = data.split(',');
             startWords = words.filter(function(element){
@@ -70,6 +68,7 @@ function getDefinition(){
     } else {
 
         word = this.getElementsByClassName('word')[0].innerHTML;
+        console.log("word in getDefinition: " + word);
         request = new XMLHttpRequest();
         request.open('GET', '/define/' + word);
         request.onreadystatechange = function(){

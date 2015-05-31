@@ -16,24 +16,27 @@ http.createServer(function handler(request, response){
     if (url.length === 1){
         response.writeHead(200,{'Content-Type': 'text/html'});
         response.end(index.toString());
-    } else if(url.indexOf('/find/') > - 1){
-      //localhost:3000/find/word
+    } else if(url.indexOf('/find/') > - 1){ //localhost:3000/find/word
       word = url.split('/')[2];
+      console.log("word before ac.findword: " + word);
       ac.findWord(word, function(err, found){
           // console.log("Found the following words: " + found);
           response.end(found.join(',')); // returns to client string of found words
       });
+
       // response.end('word:', word);
   }
   else if(url.indexOf('/define/') > -1){
     // define stuff here
+      console.log("url:" + url);
       word = url.split('/')[2];
+      console.log("word before ac.define: " + word);
       ac.define(word, function(err, definition){ // definition has stuff at this point
           if(err){
               response.end(err);
           }
           //console.log("DEFINITION TO STRING: " + definition);
-          response.end(definition); // returns to client string of found words
+          response.end(definition); // returns to client string of definition
       });
   } else {
       fs.readFile(__dirname + url, function(err, data){

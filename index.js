@@ -41,7 +41,7 @@ ac.define = function (word, callback, specificURL){
     var body = "",
         url,
         request;
-
+    console.log("word in ac.define: " +  word);
     url = specificURL || 'http://en.wiktionary.org/w/api.php?action=query&titles=' + word + '&prop=revisions&rvprop=content&rvgeneratexml=&format=json';
     request = http.get(url, function (response){
         response.on('data', function(chunk){
