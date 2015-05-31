@@ -1,11 +1,13 @@
-var http = require('http');
 var port = process.env.PORT || 3000;
+
 var ac = require('./index.js');
+var fs = require('fs');
+var http = require('http');
+var index = fs.readFileSync(__dirname + '/index.html');
+
 ac.import(function(err, count){
   console.log('imported a bunch of words');
 });
-var fs = require('fs');
-var index = fs.readFileSync(__dirname + '/index.html');
 
 
 http.createServer(function handler(request, response){

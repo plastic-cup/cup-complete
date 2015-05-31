@@ -7,28 +7,28 @@ var suggestions,
     statsContent = document.getElementById('statsContent');
 
 $('#search').keyup(function(e){
-  var word = $('#search').val();
-  if (word.length > 2){
-    $.get('/find/'+word, function handler(data) {
-      var words = data.split(',');
-      var startWords = words.filter(function(element){
-          return element.slice(0, word.length) === word;
-      });
-      var midWords = words.filter(function(element){
-          return element.slice(0, word.length) !== word.charAt(0);
-      });
-      words = startWords.concat(midWords);
-      var results = '';
-      words.forEach(function(w) {
-        w = w.split(word).join("<span class='highlight'>" + word + "</span>");
-        results += "<div class='suggestion'><p class='word'> " + w + "</p></div>";
-      });
-      $('#results').html(results);
-      suggestionUpdater();
-    });
-  } else if (word.length === 0){
-    $('#results').html('');
-  }
+    var word = $('#search').val();
+    if (word.length > 2){
+        $.get('/find/'+word, function handler(data) {
+            var words = data.split(',');
+            var startWords = words.filter(function(element){
+                return element.slice(0, word.length) === word;
+            });
+            var midWords = words.filter(function(element){
+                return element.slice(0, word.length) !== word.charAt(0);
+            });
+            words = startWords.concat(midWords);
+            var results = '';
+            words.forEach(function(w) {
+                w = w.split(word).join("<span class='highlight'>" + word + "</span>");
+                results += "<div class='suggestion'><p class='word'> " + w + "</p></div>";
+            });
+            $('#results').html(results);
+            suggestionUpdater();
+        });
+    } else if (word.length === 0){
+        $('#results').html('');
+    }
 });
 
 function suggestionUpdater(){

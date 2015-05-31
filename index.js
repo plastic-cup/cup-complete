@@ -1,15 +1,17 @@
-var fs = require('fs');
-var ac = {};
-var http = require('http');
+var fs = require('fs'),
+    ac = {},
+    http = require('http'),
+    getDefs = require('./getDefs.js');
 
 ac.import = function(callback){
+    var filename;
     if (typeof callback !== 'function'){
         return new Error('function plz');
     }
-    var filename = __dirname + '/words.txt';
+    filename = __dirname + '/words.txt';
     fs.readFile(filename, 'utf8', function(err, data){
         ac.words = data.split('\n').filter(function(line){
-          return line;
+            return line;
         });
         callback(err, ac.words);
     });
@@ -17,146 +19,72 @@ ac.import = function(callback){
 
 ac.stats = function(word, callback){
     if (!ac.searches) {
-      ac.searches = {};
+        ac.searches = {};
     }
     if (!ac.searches[word]) {
-      ac.searches[word] = [];
+        ac.searches[word] = [];
     }
     ac.searches[word].push(new Date().getTime());
     return callback(null, ac.searches);
 };
 
 ac.findWord = function(word, callback, next){
-  var statsCallback = next || function(){return;};
-  var found = ac.words.filter(function(element){
-    return element.indexOf(word) >= 0;
-  });
-  ac.stats(word,statsCallback);
-  return callback(null, found);
+    var statsCallback = next || function(){return;};
+    var found = ac.words.filter(function(element){
+        return element.indexOf(word) >= 0;
+    });
+    ac.stats(word,statsCallback);
+    return callback(null, found);
 };
 
 ac.define = function (word, callback, specificURL){
-    var body = '';
-    var url = specificURL || 'http://en.wiktionary.org/w/api.php?action=query&titles=' + word + '&prop=revisions&rvprop=content&rvgeneratexml=&format=json';
-    var request = http.get(url, function (response){
+    var body = "",
+        url,
+        request;
 
+    url = specificURL || 'http://en.wiktionary.org/w/api.php?action=query&titles=' + word + '&prop=revisions&rvprop=content&rvgeneratexml=&format=json';
+    request = http.get(url, function (response){
         response.on('data', function(chunk){
             body += chunk;
         });
-      response.on('end', function(){
+        response.on('end', function(){
+            var json2object,
+                pageContent,
+                definitionObject,
+                definitionString = "";
 
-          var json2object = JSON.parse(body).query.pages;
-          var pageContent;
-          for (var key in json2object){
-              pageContent = json2object[key].revisions[0]['*'];
-          }
+            json2object = JSON.parse(body).query.pages;
 
-          var getDefs = function(body){// calls getHash
+            for (var key in json2object){
+                pageContent = json2object[key].revisions[0]['*'];
+            }
 
-              // regex used in sliceHash
-              var regAllEquals = /\n?={2,}/g; // gets ==
-              var regHash = /# \w+/g; // gets '# someword'
-              var regHashCurly = /# [{\w]/g; // gets '# {' or '# someword'
-              var regNoHash = /\n?#+\*/; // gets '#*'
+            definitionObject = getDefs(pageContent);
+            console.log(definitionObject);
 
-              var sections = body.split(regAllEquals);
+            // clean up definition text
+            for (var partOfSpeech in definitionObject){
+                // remove duplicate words
+                definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                    return e.replace(/ \w+\|/g, " ");
+                });
+                // remove excessive quotation marks
+                definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                    return e.replace(/''/g, "");
+                });
+                // remove hashes
+                definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+                    return e.replace(/#+/g, "");
+                });
+                definitionString += definitionObject[partOfSpeech] + "\n";
+            }
 
-              return getHash(sections);
-
-              function getHash(sectionsArray){
-                  var allDefs = {};
-                  // loops for all possible parts of speech
-                  for (var i = 0; i < sectionsArray.length; i++){
-                      var defs = [];
-                      // if this contains hashes, gimme gimme gimme
-                      if (sectionsArray[i].match(regHash)){
-                          // console.log("HASHY SECTIONSARRAY[i]");
-                          // console.log(sectionsArray[i]);
-                          var partOfSpeech = getSpeech(sectionsArray[i]);
-                          defs = sliceHash(sectionsArray[i]);
-                          if (!(partOfSpeech in allDefs)){
-
-                              allDefs[partOfSpeech] = defs;
-                          } else {
-                            allDefs[partOfSpeech].concat(defs);
-                          }
-
-                          allDefs[partOfSpeech] = allDefs[partOfSpeech].slice(0,4);
-
-                       }
-
-                  }
-                  return allDefs; // returns to uberfunction getDefs
-              }
-
-              function getSpeech(hashblockString){
-                  var result = "No part of speech found";
-                  var before;
-                  var beforeIndex;
-                  var after;
-                  var afterIndex;
-                  var pos = [/noun/,/verb/, /adj/, /adv/, /conj/, /prep/];
-
-                  for (var i = 0; i < pos.length; i++){
-                      result = pos[i];
-                      break;
-                  }
-
-                  return result; // returns to getHash
-              }
-              function sliceHash(hashblockArray){
-                  var eachDef = [];
-                  var arr = hashblockArray.split("\n");
-                  var noMoreStars = arr.filter(function(e){
-                      return e.match(regNoHash) === null;
-                  });
-                  for (var i = 0; i < noMoreStars.length; i++){
-                      if (noMoreStars[i].match(regHashCurly)){
-                          //noMoreStars[i].replace("[[", "");
-                          eachDef.push(noMoreStars[i]);
-                      }
-                  }
-                  //var regNoSquare = /[[/g;
-                  eachDef = eachDef.map(function(def){
-                      return def.replace(/[\[\]]/g, ''); // remove anything between []
-                  });
-                  eachDef = eachDef.map(function(def){
-                      return def.replace(/{.*?}}/g, ''); // removes anything between {}
-                  });
-                  return eachDef;  // array returns to getHash
-              }
-
-
-          };
-
-          var definitionObject = getDefs(pageContent);
-          console.log(definitionObject);
-          var definitionString = "";
-          for (var partOfSpeech in definitionObject){
-
-              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
-                  return e.replace(/ \w+\|/g, " ");
-              });
-              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
-                  return e.replace(/''/g, "");
-              });
-              definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
-                  return e.replace(/#+/g, "");
-              });
-              definitionString += definitionObject[partOfSpeech] +"\n";
-
-
-          }
-
-
-
-          return callback(null, definitionString);
-
-      });
-  });
-  request.on('error',function(error){
-    callback(error);
-  });
+            return callback(null, definitionString);
+        });
+    });
+    request.on('error',function(error){
+        callback(error);
+    });
 };
 
 module.exports = ac;
