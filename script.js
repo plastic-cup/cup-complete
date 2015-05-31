@@ -48,6 +48,7 @@ function suggestionUpdater(){
 
 function defAppend(definition){
     this.innerHTML += '<p class = "definition">' + definition + '</p>';
+    //console.log(definition);
     var heightToggle = function(){
         this.lastChild.className += ' show';
     }.bind(this);

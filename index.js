@@ -61,7 +61,6 @@ ac.define = function (word, callback, specificURL){
             }
 
             definitionString = getDefs(pageContent);
-
             return callback(null, definitionString);
         });
     });
