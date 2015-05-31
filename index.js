@@ -38,47 +38,29 @@ ac.findWord = function(word, callback, next){
 };
 
 ac.define = function (word, callback, specificURL){
-    var body = "",
-        url,
-        request;
-    console.log("word in ac.define: " +  word);
-    url = specificURL || 'http://en.wiktionary.org/w/api.php?action=query&titles=' + word + '&prop=revisions&rvprop=content&rvgeneratexml=&format=json';
-    request = http.get(url, function (response){
+    var url = specificURL || 'http://en.wiktionary.org/w/api.php?action=query&titles=' + word + '&prop=revisions&rvprop=content&rvgeneratexml=&format=json';
+    var body = "";
+    var request = http.get(url, function (response){
+
         response.on('data', function(chunk){
             body += chunk;
         });
         response.on('end', function(){
-            var json2object,
+
+            var json2object = JSON.parse(body).query.pages,
                 pageContent,
-                definitionObject,
-                definitionString = "";
+                definitionString;
 
-            json2object = JSON.parse(body).query.pages;
-            console.log(json2object);
-
+            if (json2object[-1]) {
+                console.log("JSON OBJECT (for debugging purposes):");
+                console.log(json2object);
+                return callback('no definition found', '');
+            }
             for (var key in json2object){
                 pageContent = json2object[key].revisions[0]['*'];
             }
 
-            definitionObject = getDefs(pageContent);
-            console.log(definitionObject);
-
-            // clean up definition text
-            for (var partOfSpeech in definitionObject){
-                // remove duplicate words
-                definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
-                    return e.replace(/ \w+\|/g, " ");
-                });
-                // remove excessive quotation marks
-                definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
-                    return e.replace(/''/g, "");
-                });
-                // remove hashes
-                definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
-                    return e.replace(/#+/g, "");
-                });
-                definitionString += definitionObject[partOfSpeech] + "\n";
-            }
+            definitionString = getDefs(pageContent);
 
             return callback(null, definitionString);
         });

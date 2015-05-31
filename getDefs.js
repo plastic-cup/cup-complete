@@ -5,11 +5,27 @@ module.exports = function(body){// calls getHash
         regHash = /# \w+/g, // gets '# someword'
         regHashCurly = /# [{\w]/g, // gets '# {' or '# someword'
         regNoHash = /\n?#+\*/, // gets '#*'
-        sections;
+        sections = body.split(regAllEquals),
+        definitionString = "",
+        definitionObject;
 
-        sections = body.split(regAllEquals);
+    definitionObject = getHash(sections);
 
-    return getHash(sections);
+    for (var partOfSpeech in definitionObject){
+
+        definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+            return e.replace(/ \w+\|/g, " ");
+        });
+        definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+            return e.replace(/''/g, "");
+        });
+        definitionObject[partOfSpeech] = definitionObject[partOfSpeech].map(function(e){
+            return e.replace(/#+/g, "");
+        });
+        definitionString += definitionObject[partOfSpeech] +"\n";
+    }
+    return definitionString;
+
 
     function getHash(sectionsArray){
         var allDefs = {};
@@ -26,7 +42,7 @@ module.exports = function(body){// calls getHash
                 if (!(partOfSpeech in allDefs)){
                     allDefs[partOfSpeech] = defs;
                 } else {
-                  allDefs[partOfSpeech].concat(defs);
+                    allDefs[partOfSpeech].concat(defs);
                 }
                 allDefs[partOfSpeech] = allDefs[partOfSpeech].slice(0,4);
              }
@@ -47,8 +63,7 @@ module.exports = function(body){// calls getHash
     }
     function sliceHash(hashblockArray){
         var eachDef = [];
-        var arr = hashblockArray.split("\n");
-        var noMoreStars = arr.filter(function(e){
+        var noMoreStars = hashblockArray.split("\n").filter(function(e){
             return e.match(regNoHash) === null;
         });
         for (var i = 0; i < noMoreStars.length; i++){
