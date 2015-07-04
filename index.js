@@ -25,7 +25,7 @@ ac.stats = function(word, callback){
         ac.searches[word] = [];
     }
     ac.searches[word].push(new Date().getTime());
-    return callback(null, ac.searches);
+    callback(null, ac.searches);
 };
 
 ac.findWord = function(word, callback, next){
@@ -34,7 +34,7 @@ ac.findWord = function(word, callback, next){
         return element.indexOf(word) >= 0;
     });
     ac.stats(word,statsCallback);
-    return callback(null, found);
+    callback(null, found);
 };
 
 ac.define = function (word, callback, specificURL){
@@ -52,9 +52,7 @@ ac.define = function (word, callback, specificURL){
                 definitionString;
 
             if (json2object[-1]) {
-                // console.log("JSON OBJECT (for debugging purposes):");
-                // console.log(json2object);
-                return callback('no definition found', '');
+                callback('no definition found', '');
             }
             for (var key in json2object){
                 pageContent = json2object[key].revisions[0]['*'];
@@ -62,7 +60,7 @@ ac.define = function (word, callback, specificURL){
 
             definitionString = getDefs(pageContent);
             console.log(definitionString);
-            return callback(null, definitionString);
+            callback(null, definitionString);
         });
     });
     request.on('error',function(error){
